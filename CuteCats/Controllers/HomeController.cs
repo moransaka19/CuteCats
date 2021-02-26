@@ -17,14 +17,16 @@ namespace CuteCats.Controllers
         private ICatService _catService;
         private IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICatService catService, IMapper mapper)
         {
             _logger = logger;
+            _catService = catService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return Redirect("Home/Cats");
         }
 
         public IActionResult Cats()
@@ -35,7 +37,7 @@ namespace CuteCats.Controllers
             return View(catViewModels);
         }
 
-        public IActionResult CatDetail(int id)
+        public IActionResult Details(int id)
         {
             var cat = _catService.GetCatById(id);
             var catDetailViewModel = _mapper.Map<CatDetailViewModel>(cat);

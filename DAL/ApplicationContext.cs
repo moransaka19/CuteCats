@@ -16,11 +16,10 @@ namespace DAL
                 {
                     Id = 1,
                     Name = "CatName",
-                     Age = 2,
-                     BIO = "Smth Bio",
-                     Likes = 0,
-                     PathToPhoto = "Cat.jpg"
-
+                    Age = 2,
+                    BIO = "Smth Bio",
+                    Likes = 0,
+                    Photo = "Cat.jpg"
                 }
             });
 

@@ -10,6 +10,6 @@ namespace Domain
         public int Age { get; set; }
         public int Likes { get; set; }
         public string BIO { get; set; }
-        public string PathToPhoto { get; set; }
+        public string Photo { get; set; }
     }
 }
