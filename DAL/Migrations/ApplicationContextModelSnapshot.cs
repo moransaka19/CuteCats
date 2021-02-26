@@ -18,49 +18,41 @@ namespace DAL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Domain.Vacancy", b =>
+            modelBuilder.Entity("Domain.Cat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CompanyName")
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BIO")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RecrutierName")
+                    b.Property<string>("PathToPhoto")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vacancies");
+                    b.ToTable("Cats");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CompanyName = "Test Name",
-                            Description = "Test Description 1",
-                            Location = "Test Location",
-                            Name = "Vacancy Name",
-                            PhoneNumber = "+380990000000",
-                            Price = 100000,
-                            RecrutierName = "Recrutier Name 1"
+                            Age = 2,
+                            BIO = "Smth Bio",
+                            Likes = 0,
+                            Name = "CatName",
+                            PathToPhoto = "Cat.jpg"
                         });
                 });
 #pragma warning restore 612, 618

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DAL.Interfaces
 {
-    public interface IVacancyRepository : IBaseRepository<Vacancy>
+    public interface ICatRepository : IBaseRepository<Cat>
     {
     }
 }

@@ -1,4 +1,6 @@
-﻿using CuteCats.Models;
+﻿using AutoMapper;
+using BLL.Interfaces;
+using CuteCats.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,6 +14,8 @@ namespace CuteCats.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private ICatService _catService;
+        private IMapper _mapper;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -23,9 +27,27 @@ namespace CuteCats.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Cats()
         {
-            return View();
+            var cats = _catService.GetCats();
+            var catViewModels = _mapper.Map<IEnumerable<CatViewModel>>(cats);
+          
+            return View(catViewModels);
+        }
+
+        public IActionResult CatDetail(int id)
+        {
+            var cat = _catService.GetCatById(id);
+            var catDetailViewModel = _mapper.Map<CatDetailViewModel>(cat);
+
+            return View(catDetailViewModel);
+        }
+
+        public IActionResult Like(int id)
+        {
+            _catService.LikeCatById(id);
+
+            return Redirect("Cats");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

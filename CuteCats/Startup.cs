@@ -1,12 +1,19 @@
+using BLL.Interfaces;
+using BLL.Services;
+using DAL;
+using DAL.Interfaces;
+using DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CuteCats
@@ -24,6 +31,15 @@ namespace CuteCats
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+            
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddTransient<ICatService, CatService>();
+            services.AddTransient<ICatRepository, CatRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
