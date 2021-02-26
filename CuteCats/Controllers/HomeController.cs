@@ -41,6 +41,7 @@ namespace CuteCats.Controllers
         {
             var cat = _catService.GetCatById(id);
             var catDetailViewModel = _mapper.Map<CatDetailViewModel>(cat);
+            catDetailViewModel.Photo = _catService.GetCatPhoto(catDetailViewModel.Photo);
 
             return View(catDetailViewModel);
         }

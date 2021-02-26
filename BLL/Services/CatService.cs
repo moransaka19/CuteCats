@@ -33,7 +33,7 @@ namespace BLL.Services
 
         public string GetCatPhoto(string fileName)
         {
-            var path = "CatImg" + fileName;
+            var path = "CatImg/" + fileName;
             var imageArray = System.IO.File.ReadAllBytes(path);
             var imgBase64 = Convert.ToBase64String(imageArray);
 
