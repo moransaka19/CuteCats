@@ -27,7 +27,7 @@ namespace CuteCats.Controllers
         public IActionResult Index()
         {
             var cats = _catService.GetCats();
-            var catViewModels = _mapper.Map<IEnumerable<CatViewModel>>(cats);
+            var catViewModels = _mapper.Map<IEnumerable<CatViewModel>>(cats).OrderByDescending(c => c.Likes);
 
             return View(catViewModels);
         }
@@ -62,19 +62,36 @@ namespace CuteCats.Controllers
             return Redirect("Cat");
         }
 
+        public IActionResult Edit(int id)
+        {
+            var cat = _catService.GetCatById(id);
+            var catEditViewModel = _mapper.Map<CatEditViewModel>(cat);
+            catEditViewModel.Photo = _catService.GetCatPhoto(catEditViewModel.Photo);
+
+            return View(catEditViewModel);
+        }
 
         [HttpPost]
-        public void UploadFile(IFormFile file)
+        public async Task<IActionResult> Edit(CatEditViewModel model, IFormFile file)
         {
-            int i = 9;
-           
+            var pathToFile = "CatImg/" + file.FileName;
+            using (var fs = new FileStream(pathToFile, FileMode.Create))
+            {
+                await file.CopyToAsync(fs);
+            }
+
+            model.File = file;
+            var cat = _mapper.Map<CatEditViewModel, Cat>(model);
+            _catService.UpdateCat(cat);
+
+            return Redirect("../Index");
         }
 
         public IActionResult Like(int id)
         {
             _catService.LikeCatById(id);
 
-            return Redirect("Cats");
+            return Redirect("../Index");
         }
     }
 }

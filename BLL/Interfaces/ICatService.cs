@@ -13,5 +13,6 @@ namespace BLL.Interfaces
         Cat GetCatById(int id);
         string GetCatPhoto(string fileName);
         void AddNewCat(Cat model);
+        void UpdateCat(Cat model);
     }
 }

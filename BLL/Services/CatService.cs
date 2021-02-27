@@ -23,11 +23,6 @@ namespace BLL.Services
         {
             var cat = _catRepository.GetById(id);
 
-            if (cat == null)
-            {
-                throw new NullReferenceException();
-            }
-
             return cat;
         }
 
@@ -50,6 +45,11 @@ namespace BLL.Services
         public void AddNewCat(Cat model)
         {
             _catRepository.Add(model);
+        }
+
+        public void UpdateCat(Cat model)
+        {
+            _catRepository.Update(model);
         }
 
         public void LikeCatById(int id)
