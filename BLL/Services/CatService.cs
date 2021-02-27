@@ -47,6 +47,11 @@ namespace BLL.Services
             return cats;
         }
 
+        public void AddNewCat(Cat model)
+        {
+            _catRepository.Add(model);
+        }
+
         public void LikeCatById(int id)
         {
             var cat = GetCatById(id);

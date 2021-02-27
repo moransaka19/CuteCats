@@ -12,5 +12,6 @@ namespace BLL.Interfaces
         IQueryable<Cat> GetCats();
         Cat GetCatById(int id);
         string GetCatPhoto(string fileName);
+        void AddNewCat(Cat model);
     }
 }
