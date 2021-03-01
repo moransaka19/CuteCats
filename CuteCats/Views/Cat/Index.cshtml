@@ -4,12 +4,14 @@
     ViewData["Title"] = "GetCats";
 }
 
-<h1>GetCats</h1>
+<h1>Котики</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button class="btn btn-success">
+        <a asp-action="Create">Добавить нового котика</a>
+    </button>
 </p>
-<table class="table">
+<table class="table table-danger table-hover">
     <thead>
         <tr>
             <th>
@@ -28,25 +30,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Likes)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Likes)
+                </td>
+                <td>
+                    @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Узнать больше", "Details", new { id = item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
