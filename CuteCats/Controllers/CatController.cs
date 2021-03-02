@@ -74,17 +74,43 @@ namespace CuteCats.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(CatEditViewModel model, IFormFile file)
         {
-            var pathToFile = "CatImg/" + file.FileName;
-            using (var fs = new FileStream(pathToFile, FileMode.Create))
+            if (file != null)
             {
-                await file.CopyToAsync(fs);
+                var pathToFile = "CatImg/" + file.FileName;
+                using (var fs = new FileStream(pathToFile, FileMode.Create))
+                {
+                    await file.CopyToAsync(fs);
+                }
+
+                model.File = file;
+            }
+            
+            var cat = _mapper.Map<CatEditViewModel, Cat>(model);
+           
+            if (file != null)
+            {
+                cat.Photo = file.FileName;
             }
 
-            model.File = file;
-            var cat = _mapper.Map<CatEditViewModel, Cat>(model);
             _catService.UpdateCat(cat);
 
             return Redirect("../Index");
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var cat =_catService.GetCatById(id);
+            var catDetailViewModel = _mapper.Map<CatDetailViewModel>(cat);
+
+            return View(catDetailViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(CatDetailViewModel model)
+        {
+            var cat = _mapper.Map<Cat>(model);
+            _catService.RemoveCat(cat);
+            return Redirect("../Cat");
         }
 
         public IActionResult Like(int id)

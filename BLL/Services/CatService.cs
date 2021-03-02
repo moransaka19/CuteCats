@@ -52,6 +52,11 @@ namespace BLL.Services
             _catRepository.Update(model);
         }
 
+        public void RemoveCat(Cat model)
+        {
+            _catRepository.Delete(model);
+        }
+
         public void LikeCatById(int id)
         {
             var cat = GetCatById(id);
