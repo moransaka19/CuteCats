@@ -13,7 +13,5 @@ namespace CuteCats.Models
         public int Age { get; set; }
         public string BIO { get; set; }
         public string Photo { get; set; }
-        public IFormFile File { get; set; }
-        
     }
 }

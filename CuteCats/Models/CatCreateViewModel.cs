@@ -18,6 +18,6 @@ namespace CuteCats.Models
         
         public string BIO { get; set; }
         
-        public IFormFile Photo { get; set; }
+        public string Photo { get; set; }
     }
 }

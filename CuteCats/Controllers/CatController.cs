@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
+using BLL.Services;
 using CuteCats.Models;
 using Domain;
 using Microsoft.AspNetCore.Http;
@@ -15,11 +16,15 @@ namespace CuteCats.Controllers
     public class CatController : Controller
     {
         private ICatService _catService;
+        private readonly BlobService _blobService;
         private IMapper _mapper;
 
-        public CatController(ICatService catService, IMapper mapper)
+        public CatController(ICatService catService,
+            BlobService blobService,
+            IMapper mapper)
         {
             _catService = catService;
+            _blobService = blobService;
             _mapper = mapper;
         }
 
@@ -47,19 +52,14 @@ namespace CuteCats.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CatCreateViewModel model, IFormFile file)
+        public IActionResult Create(CatCreateViewModel model, IFormFile file)
         {
-            var pathToFile = "CatImg/" + file.FileName;
-            using (var fs = new FileStream(pathToFile, FileMode.Create))
-            {
-                await file.CopyToAsync(fs);
-            }
-            
-            model.Photo = file;
+            _blobService.UploadPicture(file.FileName, file.OpenReadStream());
+            model.Photo = file.FileName;
             var cat = _mapper.Map<CatCreateViewModel, Cat>(model);
             _catService.AddNewCat(cat);
 
-            return Redirect("Cat");
+            return Redirect("../Cat");
         }
 
         public IActionResult Edit(int id)
@@ -72,34 +72,22 @@ namespace CuteCats.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CatEditViewModel model, IFormFile file)
+        public IActionResult Edit(CatEditViewModel model, IFormFile file)
         {
             if (file != null)
             {
-                var pathToFile = "CatImg/" + file.FileName;
-                using (var fs = new FileStream(pathToFile, FileMode.Create))
-                {
-                    await file.CopyToAsync(fs);
-                }
-
-                model.File = file;
+                _blobService.UploadPicture(file.FileName, file.OpenReadStream());
+                model.Photo = file.FileName;
+                var cat = _mapper.Map<Cat>(model);
+                _catService.UpdateCat(cat);
             }
-            
-            var cat = _mapper.Map<CatEditViewModel, Cat>(model);
-           
-            if (file != null)
-            {
-                cat.Photo = file.FileName;
-            }
-
-            _catService.UpdateCat(cat);
 
             return Redirect("../Index");
         }
 
         public IActionResult Delete(int id)
         {
-            var cat =_catService.GetCatById(id);
+            var cat = _catService.GetCatById(id);
             var catDetailViewModel = _mapper.Map<CatDetailViewModel>(cat);
 
             return View(catDetailViewModel);
@@ -108,9 +96,10 @@ namespace CuteCats.Controllers
         [HttpPost]
         public IActionResult Delete(CatDetailViewModel model)
         {
-            var cat = _mapper.Map<Cat>(model);
+            var cat = _catService.GetCatById(model.Id);
+            _blobService.DeletePicture(cat.Photo);
             _catService.RemoveCat(cat);
-            return Redirect("../Cat");
+            return Redirect("../");
         }
 
         public IActionResult Like(int id)

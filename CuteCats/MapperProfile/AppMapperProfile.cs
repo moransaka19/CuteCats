@@ -16,8 +16,7 @@ namespace CuteCats.MapperProfile
                 .ReverseMap();
             CreateMap<Cat, CatDetailViewModel>()
                 .ReverseMap();
-            CreateMap<CatCreateViewModel, Cat>()
-                .ForMember(dst => dst.Photo, opt => opt.MapFrom(src => src.Photo.FileName));
+            CreateMap<CatCreateViewModel, Cat>();
             CreateMap<CatEditViewModel, Cat>();
             CreateMap<Cat, CatEditViewModel>();
         }

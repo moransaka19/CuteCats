@@ -40,6 +40,7 @@ namespace CuteCats
 
             services.AddTransient<ICatService, CatService>();
             services.AddTransient<ICatRepository, CatRepository>();
+            services.AddTransient<BlobService>((_) => new BlobService(Configuration.GetValue<string>("BlobConnectionstring")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

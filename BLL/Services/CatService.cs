@@ -13,10 +13,13 @@ namespace BLL.Services
     public class CatService : ICatService
     {
         private ICatRepository _catRepository;
+        private BlobService _blobService;
 
-        public CatService(ICatRepository catRepository)
+        public CatService(ICatRepository catRepository,
+            BlobService blobService)
         {
             _catRepository = catRepository;
+            _blobService = blobService;
         }
 
         public Cat GetCatById(int id)
@@ -28,9 +31,8 @@ namespace BLL.Services
 
         public string GetCatPhoto(string fileName)
         {
-            var path = "CatImg/" + fileName;
-            var imageArray = System.IO.File.ReadAllBytes(path);
-            var imgBase64 = Convert.ToBase64String(imageArray);
+            var picture = _blobService.DownloadPicture(fileName);
+            var imgBase64 = Convert.ToBase64String(picture);
 
             return "data:image/gif;base64," + imgBase64;
         }
